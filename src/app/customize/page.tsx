@@ -258,9 +258,17 @@ export default function CustomizePage() {
 
                 {photo && (
                   <Rnd
-  size={imageSize}
-  position={{ x: imageSize.x, y: imageSize.y }}
+  size={{
+    width: imageSize.width,
+    height: imageSize.height,
+  }}
+  position={{
+    x: imageSize.x,
+    y: imageSize.y,
+  }}
   bounds="parent"
+  style={{ zIndex: 20 }}
+  dragHandleClassName="image-drag-area"
   lockAspectRatio={false}
   enableResizing={{
     topLeft: true,
@@ -272,20 +280,30 @@ export default function CustomizePage() {
     bottom: true,
     left: true,
   }}
-  onResizeStop={(e, dir, ref, delta, pos) =>
+  onDragStop={(e, d) => {
+    setImageSize((prev) => ({
+      ...prev,
+      x: d.x,
+      y: d.y,
+    }));
+  }}
+  onResizeStop={(e, dir, ref, delta, pos) => {
     setImageSize({
       width: parseInt(ref.style.width),
       height: parseInt(ref.style.height),
       x: pos.x,
       y: pos.y,
-    })
-  }
+    });
+  }}
 >
-  <img
-    src={photo}
-    alt="Uploaded"
-    className="w-full h-full object-cover rounded-md"
-  />
+  <div className="image-drag-area w-full h-full cursor-move">
+    <img
+      src={photo}
+      alt="Uploaded"
+      draggable={false}
+      className="w-full h-full object-cover rounded-md select-none pointer-events-none"
+    />
+  </div>
 </Rnd>
                 )}
 
