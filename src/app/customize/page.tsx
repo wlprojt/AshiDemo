@@ -86,52 +86,63 @@ export default function CustomizePage() {
             Upload Photo
           </button>
 
-          <div className="mt-4 grid grid-cols-2 gap-3">
-  <button
-    onClick={() =>
-      setImageSize((p) => ({ ...p, height: p.height + 10 }))
-    }
-    className="flex items-center justify-center gap-2 bg-purple-600 text-white rounded-xl py-2"
-  >
-    <ArrowUp size={16} />
-    H+
-  </button>
+          <div className="mt-4">
+  <h3 className="font-semibold text-sm mb-3">Image Size</h3>
 
-  <button
-    onClick={() =>
-      setImageSize((p) => ({
-        ...p,
-        height: Math.max(50, p.height - 10),
-      }))
-    }
-    className="flex items-center justify-center gap-2 bg-purple-600 text-white rounded-xl py-2"
-  >
-    <ArrowDown size={16} />
-    H-
-  </button>
+  <div className="grid grid-cols-2 gap-3">
+    <button
+      onClick={() =>
+        setImageSize((prev) => ({
+          ...prev,
+          width: prev.width + 10,
+        }))
+      }
+      className="bg-purple-600 text-white rounded-xl py-2"
+    >
+      W+
+    </button>
 
-  <button
-    onClick={() =>
-      setImageSize((p) => ({ ...p, width: p.width + 10 }))
-    }
-    className="flex items-center justify-center gap-2 bg-purple-600 text-white rounded-xl py-2"
-  >
-    <ArrowRight size={16} />
-    W+
-  </button>
+    <button
+      onClick={() =>
+        setImageSize((prev) => ({
+          ...prev,
+          width: Math.max(50, prev.width - 10),
+        }))
+      }
+      className="bg-purple-600 text-white rounded-xl py-2"
+    >
+      W-
+    </button>
 
-  <button
-    onClick={() =>
-      setImageSize((p) => ({
-        ...p,
-        width: Math.max(50, p.width - 10),
-      }))
-    }
-    className="flex items-center justify-center gap-2 bg-purple-600 text-white rounded-xl py-2"
-  >
-    <ArrowLeft size={16} />
-    W-
-  </button>
+    <button
+      onClick={() =>
+        setImageSize((prev) => ({
+          ...prev,
+          height: prev.height + 10,
+        }))
+      }
+      className="bg-purple-600 text-white rounded-xl py-2"
+    >
+      H+
+    </button>
+
+    <button
+      onClick={() =>
+        setImageSize((prev) => ({
+          ...prev,
+          height: Math.max(50, prev.height - 10),
+        }))
+      }
+      className="bg-purple-600 text-white rounded-xl py-2"
+    >
+      H-
+    </button>
+  </div>
+
+  <div className="mt-4 text-xs text-gray-500 space-y-1">
+    <p>Width: {imageSize.width}px</p>
+    <p>Height: {imageSize.height}px</p>
+  </div>
 </div>
 
           <div className="mt-5">
@@ -203,15 +214,19 @@ export default function CustomizePage() {
           </div>
 
           <button
-            onClick={() => {
-              setPhoto(null);
-              setCustomText("");
-            }}
-            className="mt-6 w-full bg-red-50 text-red-600 py-3 rounded-xl font-semibold flex items-center justify-center gap-2"
-          >
-            <Trash2 size={18} />
-            Clear Design
-          </button>
+  onClick={() => {
+    setPhoto(null);
+    setCustomText("");
+
+    if (fileRef.current) {
+      fileRef.current.value = "";
+    }
+  }}
+  className="mt-6 w-full bg-red-50 text-red-600 py-3 rounded-xl font-semibold flex items-center justify-center gap-2"
+>
+  <Trash2 size={18} />
+  Clear Design
+</button>
         </aside>
 
         {/* Preview */}
