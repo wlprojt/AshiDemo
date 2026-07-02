@@ -52,7 +52,7 @@ export default function CustomizePage() {
     width: 230,
     height: 70,
     x: 35,
-    y: 420,
+    y: 350,
   });
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,11 +62,10 @@ export default function CustomizePage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f7f3ff] text-gray-700 overflow-hidden">
-      
-
-      <section className="max-w-7xl mx-auto px-6 py-10 grid lg:grid-cols-[280px_1fr_320px] gap-6">
-        <aside className="bg-white rounded-3xl p-5 shadow-sm">
+    <main className="min-h-screen bg-[#f7f3ff] text-gray-700 pb-24 xl:pb-0">
+      <section className="max-w-7xl mx-auto px-3 md:px-6 py-4 md:py-10 grid grid-cols-1 xl:grid-cols-[280px_1fr_320px] gap-4 md:gap-6">
+        {/* Tools */}
+        <aside className="order-2 xl:order-1 bg-white rounded-3xl p-4 md:p-5 shadow-sm">
           <h2 className="text-xl font-bold mb-5 text-gray-900">
             Design Tools
           </h2>
@@ -102,7 +101,7 @@ export default function CustomizePage() {
               Font Family
             </label>
 
-            <div className="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-2 gap-2 max-h-64 overflow-y-auto">
               {Object.entries(fonts).map(([name, className]) => (
                 <button
                   key={name}
@@ -120,7 +119,9 @@ export default function CustomizePage() {
           </div>
 
           <div className="mt-5">
-            <label className="font-semibold text-sm">Font Size</label>
+            <label className="font-semibold text-sm">
+              Font Size: {fontSize}px
+            </label>
             <input
               type="range"
               min={14}
@@ -131,24 +132,26 @@ export default function CustomizePage() {
             />
           </div>
 
-          <div className="mt-5">
-            <label className="font-semibold text-sm">Text Color</label>
-            <input
-              type="color"
-              value={textColor}
-              onChange={(e) => setTextColor(e.target.value)}
-              className="mt-2 w-full h-12"
-            />
-          </div>
+          <div className="grid grid-cols-2 gap-4 mt-5">
+            <div>
+              <label className="font-semibold text-sm">Text Color</label>
+              <input
+                type="color"
+                value={textColor}
+                onChange={(e) => setTextColor(e.target.value)}
+                className="mt-2 w-full h-12"
+              />
+            </div>
 
-          <div className="mt-5">
-            <label className="font-semibold text-sm">Background</label>
-            <input
-              type="color"
-              value={bgColor}
-              onChange={(e) => setBgColor(e.target.value)}
-              className="mt-2 w-full h-12"
-            />
+            <div>
+              <label className="font-semibold text-sm">Background</label>
+              <input
+                type="color"
+                value={bgColor}
+                onChange={(e) => setBgColor(e.target.value)}
+                className="mt-2 w-full h-12"
+              />
+            </div>
           </div>
 
           <button
@@ -163,104 +166,109 @@ export default function CustomizePage() {
           </button>
         </aside>
 
-        <div className="bg-[#eef0ff] rounded-3xl p-8 flex items-center justify-center min-h-[680px]">
-          <div className="relative w-[310px] h-[620px] rounded-[46px] bg-white shadow-2xl border border-gray-300 overflow-hidden">
-            <div className="absolute -left-[3px] top-[150px] w-[5px] h-[48px] bg-gray-300 rounded-l z-50" />
-            <div className="absolute -left-[3px] top-[220px] w-[5px] h-[80px] bg-gray-300 rounded-l z-50" />
-            <div className="absolute -right-[3px] top-[220px] w-[5px] h-[90px] bg-gray-300 rounded-r z-50" />
+        {/* Preview */}
+        <div className="order-1 xl:order-2 bg-[#eef0ff] rounded-3xl p-3 sm:p-6 xl:p-8 flex items-center justify-center overflow-hidden min-h-[430px] sm:min-h-[620px] xl:min-h-[680px]">
+          <div className="origin-center scale-[0.62] min-[390px]:scale-[0.68] min-[430px]:scale-75 sm:scale-90 md:scale-100 transition">
+            <div className="relative w-[310px] h-[620px] rounded-[46px] bg-white shadow-2xl border border-gray-300 overflow-hidden">
+              <div className="absolute -left-[3px] top-[150px] w-[5px] h-[48px] bg-gray-300 rounded-l z-50" />
+              <div className="absolute -left-[3px] top-[220px] w-[5px] h-[80px] bg-gray-300 rounded-l z-50" />
+              <div className="absolute -right-[3px] top-[220px] w-[5px] h-[90px] bg-gray-300 rounded-r z-50" />
 
-            <div
-              className="absolute overflow-hidden"
-              style={{
-                left: 4,
-                top: 4,
-                width: 299,
-                height: 610,
-                borderRadius: 40,
-                backgroundColor: bgColor,
-                zIndex: 10,
-              }}
-            >
-              {!photo && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-purple-600 text-center px-6 bg-white/40">
-                  <ImageIcon size={54} />
-                  <p className="mt-4 font-bold">Upload your photo</p>
-                </div>
-              )}
-
-              {photo && (
-                <Rnd
-                  size={imageSize}
-                  position={{ x: imageSize.x, y: imageSize.y }}
-                  bounds="parent"
-                  style={{ zIndex: 20 }}
-                  onDragStop={(e, d) =>
-                    setImageSize({ ...imageSize, x: d.x, y: d.y })
-                  }
-                  onResizeStop={(e, dir, ref, delta, position) =>
-                    setImageSize({
-                      width: parseInt(ref.style.width),
-                      height: parseInt(ref.style.height),
-                      x: position.x,
-                      y: position.y,
-                    })
-                  }
-                >
-                  <img
-                    src={photo}
-                    alt="Uploaded design"
-                    className="w-full h-full object-cover"
-                  />
-                </Rnd>
-              )}
-
-              {customText && (
-                <Rnd
-                  size={textBox}
-                  position={{ x: textBox.x, y: textBox.y }}
-                  bounds="parent"
-                  style={{ zIndex: 30 }}
-                  onDragStop={(e, d) =>
-                    setTextBox({ ...textBox, x: d.x, y: d.y })
-                  }
-                  onResizeStop={(e, dir, ref, delta, pos) =>
-                    setTextBox({
-                      width: parseInt(ref.style.width),
-                      height: parseInt(ref.style.height),
-                      x: pos.x,
-                      y: pos.y,
-                    })
-                  }
-                >
-                  <div
-                    style={{ color: textColor, fontSize }}
-                    className={`${
-                      fonts[selectedFont as keyof typeof fonts]
-                    } w-full h-full flex items-center justify-center font-bold text-center cursor-move`}
-                  >
-                    {customText}
+              <div
+                className="absolute overflow-hidden"
+                style={{
+                  left: 4,
+                  top: 4,
+                  width: 299,
+                  height: 610,
+                  borderRadius: 40,
+                  backgroundColor: bgColor,
+                  zIndex: 10,
+                }}
+              >
+                {!photo && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-purple-600 text-center px-6 bg-white/40">
+                    <ImageIcon size={54} />
+                    <p className="mt-4 font-bold">Upload your photo</p>
                   </div>
-                </Rnd>
-              )}
-            </div>
+                )}
 
-            <div className="absolute top-[24px] left-[26px] w-[258px] h-[88px] bg-black rounded-[44px] z-50 shadow-lg overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-black via-black to-gray-700" />
+                {photo && (
+                  <Rnd
+                    size={imageSize}
+                    position={{ x: imageSize.x, y: imageSize.y }}
+                    bounds="parent"
+                    style={{ zIndex: 20 }}
+                    onDragStop={(e, d) =>
+                      setImageSize({ ...imageSize, x: d.x, y: d.y })
+                    }
+                    onResizeStop={(e, dir, ref, delta, position) =>
+                      setImageSize({
+                        width: parseInt(ref.style.width),
+                        height: parseInt(ref.style.height),
+                        x: position.x,
+                        y: position.y,
+                      })
+                    }
+                  >
+                    <img
+                      src={photo}
+                      alt="Uploaded design"
+                      className="w-full h-full object-cover"
+                    />
+                  </Rnd>
+                )}
 
-              <div className="absolute left-[18px] top-[11px] w-[66px] h-[66px] rounded-full border-2 border-white/80 bg-black flex items-center justify-center">
-                <div className="w-[48px] h-[48px] rounded-full border border-white/70 bg-black" />
+                {customText && (
+                  <Rnd
+                    size={textBox}
+                    position={{ x: textBox.x, y: textBox.y }}
+                    bounds="parent"
+                    style={{ zIndex: 30 }}
+                    onDragStop={(e, d) =>
+                      setTextBox({ ...textBox, x: d.x, y: d.y })
+                    }
+                    onResizeStop={(e, dir, ref, delta, pos) =>
+                      setTextBox({
+                        width: parseInt(ref.style.width),
+                        height: parseInt(ref.style.height),
+                        x: pos.x,
+                        y: pos.y,
+                      })
+                    }
+                  >
+                    <div
+                      style={{ color: textColor, fontSize }}
+                      className={`${
+                        fonts[selectedFont as keyof typeof fonts]
+                      } w-full h-full flex items-center justify-center font-bold text-center cursor-move`}
+                    >
+                      {customText}
+                    </div>
+                  </Rnd>
+                )}
               </div>
 
-              <div className="absolute left-[176px] top-[34px] w-[20px] h-[20px] rounded-full border-2 border-white bg-black" />
+              {/* Camera bump */}
+              <div className="absolute top-[24px] left-[26px] w-[258px] h-[88px] bg-black rounded-[44px] z-50 shadow-lg overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-black via-black to-gray-700" />
 
-              <div className="absolute right-[24px] top-[30px] w-[30px] h-[30px] rounded-full border-2 border-white bg-white/80" />
+                <div className="absolute left-[18px] top-[11px] w-[66px] h-[66px] rounded-full border-2 border-white/80 bg-black flex items-center justify-center">
+                  <div className="w-[48px] h-[48px] rounded-full border border-white/70 bg-black" />
+                </div>
+
+                <div className="absolute left-[176px] top-[34px] w-[20px] h-[20px] rounded-full border-2 border-white bg-black" />
+
+                <div className="absolute right-[24px] top-[30px] w-[30px] h-[30px] rounded-full border-2 border-white bg-white/80" />
+              </div>
+
+              <div className="absolute inset-0 rounded-[46px] border border-gray-300 pointer-events-none z-[60]" />
             </div>
-
-            <div className="absolute inset-0 rounded-[46px] border border-gray-300 pointer-events-none z-[60]" />
           </div>
         </div>
 
-        <aside className="bg-white rounded-3xl p-6 shadow-sm">
+        {/* Summary desktop */}
+        <aside className="order-3 hidden xl:block bg-white rounded-3xl p-6 shadow-sm">
           <h2 className="text-xl text-gray-900 font-bold mb-5">
             Order Summary
           </h2>
@@ -308,6 +316,17 @@ export default function CustomizePage() {
           </button>
         </aside>
       </section>
+
+      {/* Mobile bottom action bar */}
+      <div className="xl:hidden fixed bottom-0 left-0 right-0 bg-white border-t p-3 flex gap-3 z-[100]">
+        <button className="flex-1 bg-purple-700 text-white rounded-xl py-3 font-bold">
+          Add to Cart
+        </button>
+
+        <button className="flex-1 bg-gray-900 text-white rounded-xl py-3 font-bold">
+          Buy Now
+        </button>
+      </div>
     </main>
   );
 }
