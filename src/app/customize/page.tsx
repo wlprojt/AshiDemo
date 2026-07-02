@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Upload, ImageIcon, Trash2, ShoppingCart } from "lucide-react";
+import { Upload, ImageIcon, Trash2, ArrowUp,ArrowDown, ArrowLeft, ArrowRight, } from "lucide-react";
 import { Rnd } from "react-rnd";
 import {
   Poppins,
@@ -85,6 +85,54 @@ export default function CustomizePage() {
             <Upload size={18} />
             Upload Photo
           </button>
+
+          <div className="mt-4 grid grid-cols-2 gap-3">
+  <button
+    onClick={() =>
+      setImageSize((p) => ({ ...p, height: p.height + 10 }))
+    }
+    className="flex items-center justify-center gap-2 bg-purple-600 text-white rounded-xl py-2"
+  >
+    <ArrowUp size={16} />
+    H+
+  </button>
+
+  <button
+    onClick={() =>
+      setImageSize((p) => ({
+        ...p,
+        height: Math.max(50, p.height - 10),
+      }))
+    }
+    className="flex items-center justify-center gap-2 bg-purple-600 text-white rounded-xl py-2"
+  >
+    <ArrowDown size={16} />
+    H-
+  </button>
+
+  <button
+    onClick={() =>
+      setImageSize((p) => ({ ...p, width: p.width + 10 }))
+    }
+    className="flex items-center justify-center gap-2 bg-purple-600 text-white rounded-xl py-2"
+  >
+    <ArrowRight size={16} />
+    W+
+  </button>
+
+  <button
+    onClick={() =>
+      setImageSize((p) => ({
+        ...p,
+        width: Math.max(50, p.width - 10),
+      }))
+    }
+    className="flex items-center justify-center gap-2 bg-purple-600 text-white rounded-xl py-2"
+  >
+    <ArrowLeft size={16} />
+    W-
+  </button>
+</div>
 
           <div className="mt-5">
             <label className="font-semibold text-sm">Add Text</label>
@@ -195,28 +243,35 @@ export default function CustomizePage() {
 
                 {photo && (
                   <Rnd
-                    size={imageSize}
-                    position={{ x: imageSize.x, y: imageSize.y }}
-                    bounds="parent"
-                    style={{ zIndex: 20 }}
-                    onDragStop={(e, d) =>
-                      setImageSize({ ...imageSize, x: d.x, y: d.y })
-                    }
-                    onResizeStop={(e, dir, ref, delta, position) =>
-                      setImageSize({
-                        width: parseInt(ref.style.width),
-                        height: parseInt(ref.style.height),
-                        x: position.x,
-                        y: position.y,
-                      })
-                    }
-                  >
-                    <img
-                      src={photo}
-                      alt="Uploaded design"
-                      className="w-full h-full object-cover"
-                    />
-                  </Rnd>
+  size={imageSize}
+  position={{ x: imageSize.x, y: imageSize.y }}
+  bounds="parent"
+  lockAspectRatio={false}
+  enableResizing={{
+    topLeft: true,
+    topRight: true,
+    bottomLeft: true,
+    bottomRight: true,
+    top: true,
+    right: true,
+    bottom: true,
+    left: true,
+  }}
+  onResizeStop={(e, dir, ref, delta, pos) =>
+    setImageSize({
+      width: parseInt(ref.style.width),
+      height: parseInt(ref.style.height),
+      x: pos.x,
+      y: pos.y,
+    })
+  }
+>
+  <img
+    src={photo}
+    alt="Uploaded"
+    className="w-full h-full object-cover rounded-md"
+  />
+</Rnd>
                 )}
 
                 {customText && (
@@ -330,3 +385,5 @@ export default function CustomizePage() {
     </main>
   );
 }
+
+
